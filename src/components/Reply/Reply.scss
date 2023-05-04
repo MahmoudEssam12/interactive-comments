@@ -1,0 +1,122 @@
+@import "../Comment/Comment.scss";
+
+.reply-input {
+    display: flex;
+    gap: 1rem;
+    background-color: $White;
+    padding: 1.5rem;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    position: relative;
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+
+
+
+
+    .cancel {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+        z-index: 20;
+        font-size: 1.2rem;
+        color: $Moderateblue;
+        transition: color .3s ease;
+
+        &:hover {
+            color: $Lightgrayishblue;
+        }
+    }
+}
+
+.reply-body {
+    flex-grow: 1;
+}
+
+textarea {
+    width: 100%;
+    border-radius: 10px;
+    border-color: $Moderateblue;
+    padding: 1rem;
+    font-size: 16px;
+    transition: all 0.3s linear;
+    border-color: $Moderateblue;
+    resize: none;
+
+    &:focus {
+        border-width: 2px;
+    }
+}
+
+.voteStyle {
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.badge {
+    color: $White;
+    background-color: $Moderateblue;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    font-weight: 700;
+}
+
+.controls {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+
+    div {
+        margin-right: 10px;
+    }
+}
+
+.delete-btn {
+    color: $SoftRed;
+    margin-left: auto;
+    cursor: pointer;
+
+    i {
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+
+.edit-btn {
+    color: $Moderateblue;
+    cursor: pointer;
+
+    i {
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+
+button {
+    padding: 0.8rem 1.7rem;
+    font-size: 1rem;
+    background-color: $Moderateblue;
+    color: $White;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .3s ease;
+
+    &:hover {
+        background-color: $Lightgrayishblue;
+    }
+}
+
+.update {
+    display: block;
+    margin: 1rem 0 0 auto;
+}

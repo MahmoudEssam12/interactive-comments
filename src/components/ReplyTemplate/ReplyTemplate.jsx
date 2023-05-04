@@ -1,0 +1,144 @@
+import React, { useState, useRef, useEffect } from "react";
+import "../Comment/Comment.scss";
+
+function ReplyTemplate({ comment, replyFunc, deleteReply }) {
+  const [vote, setVote] = useState(comment.score);
+  const [updating, setUpdating] = useState(false);
+  const [updateReply, setUpdateReply] = useState(comment.content);
+  const [confirmDeleteState, setConfirmDeleteState] = useState(false);
+  //   const reply = () => {
+  //     setActiveReply(!activeReply);
+  //   };
+  const upVoteRef = useRef(null);
+  const downVoteRef = useRef(null);
+
+  const confirmDelete = () => {
+    setConfirmDeleteState(true);
+  };
+  const cancelDelete = () => {
+    setConfirmDeleteState(false);
+  };
+  const upvote = () => {
+    setVote(vote + 1);
+    upVoteRef.current.classList.add("voteStyle");
+    downVoteRef.current.classList.remove("voteStyle");
+  };
+  const downVote = () => {
+    setVote(vote - 1);
+    downVoteRef.current.classList.add("voteStyle");
+    upVoteRef.current.classList.remove("voteStyle");
+  };
+  const handleChange = (e) => {
+    setUpdateReply(e.target.value);
+  };
+  const submitUpdate = () => {
+    let updatedComment = comment;
+    updatedComment.content = updateReply;
+    setUpdating(false);
+  };
+  const author = comment.user.username === "anonymous";
+
+  return (
+    <div className="comment reply-template">
+      <div className={`main-comment`}>
+        <div className="score">
+          <span className="upvote" onClick={upvote} ref={upVoteRef}>
+            +
+          </span>
+          <span className="comment-score">{vote}</span>
+          <span className="downvote" onClick={downVote} ref={downVoteRef}>
+            -
+          </span>
+        </div>
+        <div className="comment-body">
+          <div className="comment-header">
+            <div className={`avatar ${author ? "order-1" : ""}`}>
+              <img src={comment.user.image.webp} alt="avatar" />
+            </div>
+            <div className={`username ${author ? " order-2" : ""}`}>
+              {comment.user?.username}
+            </div>
+            <div className={`comment-date ${author ? " order-4" : ""}`}>
+              {comment.createdAt}
+            </div>
+
+            {comment.user.username === "anonymous" ? (
+              <>
+                <div className={`badge ${author ? " order-3" : ""}`}>you</div>
+                <div className={`controls ${author ? " order-5" : ""}`}>
+                  <div className={`delete-btn`} onClick={confirmDelete}>
+                    <i className="fa-solid fa-trash"></i>Delete
+                  </div>
+                  <div
+                    className={`edit-btn`}
+                    onClick={() => setUpdating(!updating)}
+                  >
+                    <i className="fa-solid fa-pen"></i>Edit
+                  </div>
+                </div>
+                <div
+                  className={`confirm-wrapper ${
+                    confirmDeleteState ? "confirmation" : ""
+                  }`}
+                >
+                  <div
+                    className={`confirm-delete ${
+                      confirmDeleteState ? "confirmation" : ""
+                    }`}
+                  >
+                    <p>
+                      Are you sure you want to delete this comment? This will
+                      remove the comment and can't be undone;
+                    </p>
+                    <button className="cancel-delete" onClick={cancelDelete}>
+                      No, Cancel
+                    </button>
+                    <button
+                      className="delete"
+                      onClick={() => deleteReply(comment.id)}
+                    >
+                      Yes, Delete
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="reply-btn" onClick={() => replyFunc(true)}>
+                <i className="fa-solid fa-reply"></i>reply
+              </div>
+            )}
+          </div>
+          {updating ? (
+            <div className="reply-body">
+              <textarea
+                name="reply-content"
+                cols="30"
+                rows="3"
+                value={updateReply}
+                onChange={handleChange}
+              ></textarea>
+              <button className="update" onClick={submitUpdate}>
+                update
+              </button>
+            </div>
+          ) : (
+            <div className="comment-content">
+              <pre>{comment.content}</pre>
+            </div>
+          )}
+        </div>
+      </div>
+      {/* {activeReply && (
+        <Reply
+          active={setActiveReply}
+          comment={comment}
+          replies={replies}
+          setReplies={setReplies}
+          replyTo={comment.user.username}
+        />
+      )} */}
+    </div>
+  );
+}
+
+export default ReplyTemplate;
