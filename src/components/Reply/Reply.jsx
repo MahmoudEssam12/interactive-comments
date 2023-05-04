@@ -3,11 +3,9 @@ import avatar from "../../images/avatars/anonymous.png";
 import "./Reply.scss";
 function Reply({ active, setReplies, replies, replyTo }) {
   const createDate = () => {
-    let today = new Date(new Date().toLocaleDateString());
-    let commentDate = new Date("5/26/2022");
-    let dateInMs = today.getTime() - commentDate.getTime();
-    let dateInDays = dateInMs / 1000 / 60 / 60 / 24;
-    return dateInDays;
+    let today = new Date();
+
+    return today;
   };
   const generateID = () => {
     if (replies.length > 0) {
@@ -20,7 +18,7 @@ function Reply({ active, setReplies, replies, replyTo }) {
   const [reply, setReply] = useState({
     id: generateID(),
     content: "",
-    createdAt: createDate() + " days ago",
+    createdAt: createDate(),
     replyingTo: replyTo,
     score: 0,
     user: {

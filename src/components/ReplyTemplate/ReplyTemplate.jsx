@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "../Comment/Comment.scss";
 
 function ReplyTemplate({ comment, replyFunc, deleteReply }) {
@@ -6,12 +6,26 @@ function ReplyTemplate({ comment, replyFunc, deleteReply }) {
   const [updating, setUpdating] = useState(false);
   const [updateReply, setUpdateReply] = useState(comment.content);
   const [confirmDeleteState, setConfirmDeleteState] = useState(false);
-  //   const reply = () => {
-  //     setActiveReply(!activeReply);
-  //   };
-  const upVoteRef = useRef(null);
-  const downVoteRef = useRef(null);
 
+  const validToDownVote = Number(vote) === Number(comment.score) + 1;
+  const validToUpVote = vote === comment.score;
+
+  const getCommentDate = () => {
+    const date = new Date(comment.createdAt);
+    let today = new Date();
+    let dateInMs = today.getTime() - date.getTime();
+    let dateInMinutes = dateInMs / 1000 / 60;
+    let dateInHours = dateInMs / 1000 / 60 / 60;
+    let dateInDays = dateInMs / 1000 / 60 / 60 / 24;
+    let dateInMonths = dateInMs / 1000 / 60 / 60 / 24 / 30;
+    let dateInYears = dateInMs / 1000 / 60 / 60 / 24 / 30 / 12;
+
+    if (dateInHours < 1) return Math.ceil(dateInMinutes) + " minutes ago";
+    if (dateInDays < 1) return dateInHours.toFixed() + " hours ago";
+    if (dateInMonths < 1) return dateInDays.toFixed() + " days ago";
+    if (dateInYears < 1) return dateInMonths.toFixed() + " months ago";
+    return dateInYears.toFixed() + " years ago";
+  };
   const confirmDelete = () => {
     setConfirmDeleteState(true);
   };
@@ -19,14 +33,14 @@ function ReplyTemplate({ comment, replyFunc, deleteReply }) {
     setConfirmDeleteState(false);
   };
   const upvote = () => {
-    setVote(vote + 1);
-    upVoteRef.current.classList.add("voteStyle");
-    downVoteRef.current.classList.remove("voteStyle");
+    if (validToUpVote) {
+      setVote(vote + 1);
+    }
   };
   const downVote = () => {
-    setVote(vote - 1);
-    downVoteRef.current.classList.add("voteStyle");
-    upVoteRef.current.classList.remove("voteStyle");
+    if (validToDownVote) {
+      setVote(vote - 1);
+    }
   };
   const handleChange = (e) => {
     setUpdateReply(e.target.value);
@@ -42,13 +56,21 @@ function ReplyTemplate({ comment, replyFunc, deleteReply }) {
     <div className="comment reply-template">
       <div className={`main-comment`}>
         <div className="score">
-          <span className="upvote" onClick={upvote} ref={upVoteRef}>
+          <button
+            className="upvote"
+            onClick={upvote}
+            disabled={validToDownVote}
+          >
             +
-          </span>
+          </button>
           <span className="comment-score">{vote}</span>
-          <span className="downvote" onClick={downVote} ref={downVoteRef}>
+          <button
+            className="downvote"
+            onClick={downVote}
+            disabled={validToUpVote}
+          >
             -
-          </span>
+          </button>
         </div>
         <div className="comment-body">
           <div className="comment-header">
@@ -59,7 +81,7 @@ function ReplyTemplate({ comment, replyFunc, deleteReply }) {
               {comment.user?.username}
             </div>
             <div className={`comment-date ${author ? " order-4" : ""}`}>
-              {comment.createdAt}
+              {getCommentDate()}
             </div>
 
             {comment.user.username === "anonymous" ? (

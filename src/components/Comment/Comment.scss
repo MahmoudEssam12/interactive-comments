@@ -51,11 +51,18 @@ body {
 
 
     .score {
+
+        button,
         span {
             display: block;
             background-color: $Verylightgray;
             color: $Moderateblue;
-            padding: 8px;
+            // padding: 8px;
+            height: 40px;
+            width: 40px;
+            text-align: center;
+            padding: 0;
+
             font-weight: 500;
             text-align: center;
             cursor: default;
@@ -64,15 +71,25 @@ body {
 
         }
 
+
+
+        span {
+            line-height: 40px;
+        }
+
         .upvote {
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
             cursor: pointer;
         }
 
         .downvote {
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
             cursor: pointer;
         }
 
@@ -80,6 +97,15 @@ body {
         .downvote:hover {
             z-index: 10;
             box-shadow: 0 0 8px 0px hsl(0, 0%, 82.7%);
+        }
+
+        .downvote:disabled,
+        .upvote:disabled {
+            color: hsl(225, 3%, 74%);
+            cursor: auto;
+            z-index: 0;
+            box-shadow: none;
+
         }
     }
 

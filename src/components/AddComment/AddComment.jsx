@@ -4,11 +4,8 @@ import avatar from "../../images/avatars/anonymous.png";
 function AddComment({ setComments, comments }) {
   //   const [active, setActive] = useState(false);
   const createDate = () => {
-    let today = new Date(new Date().toLocaleDateString());
-    let commentDate = new Date("5/26/2022");
-    let dateInMs = today.getTime() - commentDate.getTime();
-    let dateInDays = dateInMs / 1000 / 60 / 60 / 24;
-    return dateInDays;
+    let today = new Date();
+    return today;
   };
   const generateID = () => {
     if (comments.length > 0) {
@@ -21,7 +18,7 @@ function AddComment({ setComments, comments }) {
   const [comment, setComment] = useState({
     id: generateID(),
     content: "",
-    createdAt: createDate() + " days ago",
+    createdAt: createDate(),
     score: 0,
     user: {
       image: {
